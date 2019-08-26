@@ -8,7 +8,5 @@ yarn-error.log*
 # Dependency directories
 node_modules/
 
-# Custom Ignored Files
-*secret.json
 
 .DS_Store
