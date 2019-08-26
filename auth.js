@@ -77,20 +77,24 @@ module.exports.authorize = (credentials) => {
  * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
  * @return {Promise} A promise to modify the oauth2Client credentials.
  */
-function getNewToken(oauth2Client) {
-  console.log('getting new auth token...');
-  openurl.open(oauth2Client.generateAuthUrl({
+function getNewToken(oauth2Client, callback) {
+  const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
-    scope: SCOPES
-  }));
-
+    scope: SCOPES,
+  });
+  console.log('Authorize this app by visiting this url:', authUrl);
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
   console.log(''); // \n
   return new Promise((resolve, reject) => {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
-    rl.question('Enter the code from that page here: ', (code) => {
+    rl.question('Enter the from that page here: ', (code) => {
+      console.log(code)
       rl.close();
       oauth2Client.getToken(code, (err, token) => {
         if (err) return reject(err);
